@@ -65,6 +65,7 @@
   --accent-dim: rgba(0, 0, 0, 0.05);
   --accent-glow: rgba(0, 0, 0, 0.1);
 
+  --gradient-accent: linear-gradient(135deg, #3a3a3a 0%, #171717 100%);
   --gradient-hero: radial-gradient(ellipse 80% 60% at 50% -20%, rgba(0, 0, 0, 0.03) 0%, transparent 70%);
 
   --shadow-card: 0 2px 16px rgba(0,0,0,0.06);
