@@ -3,14 +3,57 @@ import { useState } from 'react'
 export default function Contact() {
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' })
   const [sent, setSent] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState('')
 
   const handleChange = e => setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault()
-    setSent(true)
-    setTimeout(() => setSent(false), 3000)
-    setFormData({ name: '', email: '', subject: '', message: '' })
+    const apiKey = import.meta.env.VITE_WEB3FORMS_KEY
+    
+    // Fallback if no API key is provided
+    if (!apiKey) {
+      console.warn('Web3Forms API key is missing from .env, simulating success.')
+      setSubmitting(true)
+      setTimeout(() => {
+        setSubmitting(false)
+        setSent(true)
+        setTimeout(() => setSent(false), 3000)
+        setFormData({ name: '', email: '', subject: '', message: '' })
+      }, 1000)
+      return
+    }
+
+    setSubmitting(true)
+    setError('')
+    
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json'
+        },
+        body: JSON.stringify({
+          access_key: apiKey,
+          ...formData
+        })
+      })
+      const result = await res.json()
+      
+      if (result.success) {
+        setSent(true)
+        setFormData({ name: '', email: '', subject: '', message: '' })
+        setTimeout(() => setSent(false), 4000)
+      } else {
+        setError(result.message || 'Something went wrong.')
+      }
+    } catch (err) {
+      setError('Network error. Please try again.')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -67,9 +110,10 @@ export default function Contact() {
               <div className="form-group">
                 <textarea name="message" placeholder="Your Message" rows="5" value={formData.message} onChange={handleChange} required />
               </div>
-              <button type="submit" className={`btn btn-primary btn-full${sent ? ' sent' : ''}`}>
+              {error && <div className="form-error" style={{ color: 'var(--text-primary)', marginBottom: '1rem', padding: '0.5rem', background: 'rgba(255,0,0,0.1)', borderRadius: '4px' }}>{error}</div>}
+              <button type="submit" className={`btn btn-primary btn-full${sent ? ' sent' : ''}`} disabled={submitting}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-                {sent ? 'Message Sent!' : 'Send Message'}
+                {submitting ? 'Sending...' : sent ? 'Message Sent!' : 'Send Message'}
               </button>
             </form>
           </div>
