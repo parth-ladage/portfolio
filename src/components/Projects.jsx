@@ -13,7 +13,7 @@ const featured = [
   },
   {
     emoji: '💳',
-    image: '/images/project-quickbill.jpeg',
+    image: '/images/project-quickbill.png',
     title: 'QuickBill (ML-Integrated Billing System)',
     desc: 'A smart billing platform enhanced with machine learning for automation and financial insights.',
     features: [
