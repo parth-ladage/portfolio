@@ -1,13 +1,18 @@
 import { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 
 export default function Navbar({ darkMode, toggleTheme }) {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
+  const location = useLocation()
 
   useEffect(() => {
     const onScroll = () => {
       setScrolled(window.scrollY > 50)
+      
+      if (location.pathname !== '/') return
+      
       const sections = ['home', 'skills', 'about', 'projects', 'contact']
       for (const id of sections.reverse()) {
         const el = document.getElementById(id)
@@ -17,28 +22,33 @@ export default function Navbar({ darkMode, toggleTheme }) {
         }
       }
     }
+    
+    onScroll()
+    
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  }, [location.pathname])
+
+  const currentActive = location.pathname.startsWith('/projects') ? 'projects' : (location.pathname === '/' ? activeSection : '')
 
   const links = [
-    { id: 'home', label: 'Home' },
-    { id: 'skills', label: 'Skills' },
-    { id: 'about', label: 'About' },
-    { id: 'projects', label: 'Projects' },
-    { id: 'contact', label: 'Contact' },
+    { id: 'home', label: 'Home', href: '/#home' },
+    { id: 'skills', label: 'Skills', href: '/#skills' },
+    { id: 'about', label: 'About', href: '/#about' },
+    { id: 'projects', label: 'Projects', href: '/projects' },
+    { id: 'contact', label: 'Contact', href: '/#contact' },
   ]
 
   return (
     <nav className={`navbar${scrolled ? ' scrolled' : ''}`} id="navbar">
       <div className="nav-container">
-        <a href="#home" className="nav-logo">Parth Ladage</a>
+        <a href="/#home" className="nav-logo">Parth Ladage</a>
         <ul className={`nav-links${mobileOpen ? ' open' : ''}`}>
           {links.map(l => (
             <li key={l.id}>
               <a
-                href={`#${l.id}`}
-                className={`nav-link${activeSection === l.id ? ' active' : ''}`}
+                href={l.href}
+                className={`nav-link${currentActive === l.id ? ' active' : ''}`}
                 onClick={() => setMobileOpen(false)}
               >
                 {l.label}
