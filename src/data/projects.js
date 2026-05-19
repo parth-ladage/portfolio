@@ -1,5 +1,51 @@
 export const allProjects = [
   {
+    slug: 'customer-churn-prediction',
+    emoji: '📊',
+    image: '/images/project-churn.png',
+    title: 'Customer Churn Prediction & Risk Segmentation',
+    desc: 'An end-to-end machine learning pipeline predicting telecom customer churn and segmenting customers into actionable risk tiers.',
+    features: [
+      'Multi-model classification comparison',
+      'Dynamic risk tier segmentation',
+      'Actionable business recommendations'
+    ],
+    tech: ['Python', 'Scikit-learn', 'XGBoost', 'Streamlit'],
+    isFeatured: true,
+    github: 'https://github.com/parth-ladage/ChurnAnalysis_Parth_Ladage',
+    content: {
+      overview: [
+        "The Customer Churn Prediction & Risk Segmentation project is an end-to-end machine learning pipeline built to predict telecom customer churn and segment customers into actionable risk tiers. The project uses the IBM Telco Customer Churn dataset (~7,043 customers, 21 features) and combines exploratory data analysis with multi-model classification and an interactive, production-grade Streamlit dashboard.",
+        "Rather than treating churn prediction as a binary classification exercise, this project emphasizes extracting meaningful business insights from data—identifying why customers leave and who is most at risk—so that retention teams can act proactively. Key findings include: ~26.5% of customers have churned (≈1 in 4), month-to-month customers churn at ~42%, churned customers have an average tenure of ~18 months, and higher monthly charges correlate strongly with churn. The best model (Gradient Boosting) achieves a ROC-AUC of ~0.84.",
+        "The project is delivered as two complementary deliverables: a Jupyter Notebook (analysis.ipynb) for deep EDA and model experimentation, and a Streamlit Dashboard (dashboard/app.py) that provides real-time, filterable analytics with risk segmentation and business recommendations."
+      ],
+      architecture: [
+        "The system architecture follows a robust ML workflow and is delivered through a modular project structure:",
+        "**Data Ingestion & Preprocessing (Pandas, NumPy):** Loads and cleans the CSV dataset, coerces data types, handles null values, performs one-hot encoding of categorical features, and standardizes numerical features using Scikit-learn's StandardScaler.",
+        "**Model Training Pipeline (Scikit-learn, XGBoost):** Trains and evaluates four distinct classifiers: Logistic Regression (linear baseline), Random Forest (ensemble bagging), Gradient Boosting (sequential boosting), and XGBoost (gradient-boosted trees).",
+        "**Risk Segmentation Layer:** Assigns churning probability to every customer using the best model and categorizes them into High Risk (>60%), Medium Risk (30%–60%), and Low Risk (<30%) tiers using Pandas `pd.cut`.",
+        "**Presentation Layer (Streamlit, Plotly):** A wide-layout, single-page application (`app.py`) that handles dynamic filtering, visualization rendering, and displays business recommendations. Caching (`@st.cache_data` / `@st.cache_resource`) is heavily utilized to optimize data loading and model training.",
+        "**Design System:** The dashboard uses a fully custom CSS design system (~221 lines) featuring a dark theme, glassmorphism-style KPI cards with indigo gradients, color-coded risk cards, and Font Awesome vector icons for a premium user experience."
+      ],
+      features: [
+        "**Multi-Model Comparison Pipeline:** Simultaneously trains and evaluates four classification models, automatically identifying and badging the best-performing model by ROC-AUC score to generate customer risk scores.",
+        "**Dynamic Sidebar Filtering:** Empowers users to slice the entire dashboard in real-time using five interactive filters (Contract Type, Internet Service, Payment Method, Senior Citizen, Tenure Range), with all KPIs and charts updating instantly.",
+        "**Risk Tier Segmentation:** Segments customers into High (🔴), Medium (🟡), and Low (🟢) risk tiers, displaying summary statistics for each tier to provide a clear retention playbook.",
+        "**Interactive Visualizations:** Features six rich, Plotly-powered visualizations including Churn Distribution (donut chart), Churn Rate by Contract (bar chart), Tenure Distribution (KDE density plot), Tenure vs Monthly Charges (scatter plot), ROC Curve Comparison, and Feature Importance.",
+        "**Actionable Business Recommendations:** Programmatically generates data-driven retention strategies (e.g., target the first 6–12 months, incentivize longer contracts, optimize pricing, improve premium support).",
+        "**Premium Dark-Theme UI:** A sleek, modern interface utilizing Inter typography, glassmorphism elements, and consistent Plotly theming."
+      ],
+      lessons: [
+        "**Metric Selection for Imbalanced Data:** Reinforced the importance of using ROC-AUC instead of simple accuracy. With a ~26.5% churn rate, a naive classifier would hit ~73.5% accuracy. ROC-AUC properly evaluates the model's ability to distinguish between classes.",
+        "**Feature Engineering Over Model Complexity:** Discovered that well-engineered derived features (like ChargesPerMonth and SeniorWithNoSupport) added meaningful signal, and simpler models (Gradient Boosting) sometimes outperformed complex ones (XGBoost) when features were robust.",
+        "**Caching in ML Dashboards:** Learned that Streamlit's `@st.cache_data` and `@st.cache_resource` are essential. Separating data loading caching from model training caching prevented redundant computation and multi-second load times upon user interaction.",
+        "**The Value of Custom Styling:** Realized that investing time in custom CSS (gradient cards, custom fonts, icons) transforms a basic data script into a professional, trustworthy data product suitable for business stakeholders.",
+        "**Architectural Separation of Concerns:** Found that maintaining a separate Jupyter Notebook for EDA/experimentation and a Streamlit app for production analytics is a scalable and highly effective pattern for ML projects.",
+        "**Careful Preprocessing of Categorical Data:** Understood the necessity of meticulous preprocessing in mixed pipelines, such as ensuring one-hot encoded target columns are excluded from feature sets to avoid data leakage, and applying appropriate scaling per model type."
+      ]
+    }
+  },
+  {
     slug: 'ml-monitoring-system',
     emoji: '🧩',
     image: '/images/project-ml-monitoring.png',
