@@ -72,7 +72,7 @@ export const allProjects = [
       'Scalable backend architecture',
     ],
     tech: ['Python', 'FastAPI', 'ML'],
-    isFeatured: true,
+    isFeatured: false,
     github: 'https://github.com/parth-ladage/QuickBill',
     content: {
       overview: [
